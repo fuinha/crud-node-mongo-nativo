@@ -1,14 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  global.db.findAll((e, docs) => {
-      if(e) { return console.log(e); }
-      res.render('index', { title: 'Lista de Clientes', docs: docs });
-  })
-})
-
 router.get('/edit/:id', function(req, res) {
   var id = req.params.id;
   global.db.findOne(id, (e, docs) => {
@@ -47,5 +39,14 @@ router.get('/delete/:id', function(req, res) {
         res.redirect('/');
       });
 });
+
+/* GET home page. */
+router.get('/:pagina?', async function(req, res) {
+  const pagina = parseInt(req.params.pagina || "1");
+  const docs = await global.db.findAll(pagina);
+  const count = await global.db.countAll();
+  const qtdPaginas = Math.ceil(count / global.db.TAMANHO_PAGINA);
+  res.render('index', { title: 'Lista de Clientes', docs, count, qtdPaginas, pagina });
+})
 
 module.exports = router;

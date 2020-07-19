@@ -20,6 +20,18 @@
       <% }) %>
     </ul>
     <hr />
+    <p><%= count %> clientes encontrados!</p>
+    <p>
+      <%
+        for(var i=1; i <= qtdPaginas; i++) {
+            if(i !== pagina){
+          %>
+            <a href="/<%= i %>"><%= i %></a> | 
+            <%} else {%>
+            <%= i %> |
+      <% } }%>
+      </p>
+    <hr />
     <a href="/new">Cadastrar novo cliente</a>
   </body>
 </html>
